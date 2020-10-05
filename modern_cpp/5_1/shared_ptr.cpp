@@ -34,7 +34,11 @@ namespace liuyang {
         }
     public:
         shared_ptr(T* ptr = nullptr, 
-                Deleter_Typ deleter = [](T* a){std::cout << "default delter" << std::endl; delete a;}) 
+                Deleter_Typ deleter = 
+                    [](T* a){
+                        std::cout << "default delter" << std::endl; 
+                        delete a;
+                    }) 
                 : counter(new int(1)), ptr(ptr), deleter(deleter) {
             std::cout << this << "(shared_ptr): 创建" << std::endl;
         }
