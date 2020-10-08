@@ -25,5 +25,5 @@ void write_thread()
 
 int main()
 {
-    std::thread t1(read_thread), t2(write_thread);
+    std::thread t1(read_thread), t2(write_thread); 
 }

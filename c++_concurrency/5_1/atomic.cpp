@@ -13,5 +13,5 @@ int main()
         << std::endl
         << std::atomic<B>{}.is_always_lock_free
         << std::endl;
-
+    
 }
