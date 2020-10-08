@@ -33,12 +33,9 @@ namespace liuyang {
             }
         }
     public:
+        template<typename Deleter>
         shared_ptr(T* ptr = nullptr, 
-                Deleter_Typ deleter = 
-                    [](T* a){
-                        std::cout << "default delter" << std::endl; 
-                        delete a;
-                    }) 
+                    Deleter deleter = [](T* p) { delete p; })
                 : counter(new int(1)), ptr(ptr), deleter(deleter) {
             std::cout << this << "(shared_ptr): 创建" << std::endl;
         }
@@ -111,7 +108,7 @@ int main() {
     // (*a).a = 100;
     // std::cout << a->a << " " << a->b << " " << a->c << std::endl;
 
-    auto a = liuyang::shared_ptr<Node>(new Node[10], [](auto a) {
+    auto a = liuyang::shared_ptr(new Node[10], [](auto a) {
         std::cout << "custom deleter" << std::endl;
         delete[] a;
     });
