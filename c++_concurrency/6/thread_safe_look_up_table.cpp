@@ -13,12 +13,6 @@
 template<typename K, typename V, typename Hash = std::hash<K>>
 class A {
     class Bucket {
-    private:
-        typename std::list<std::pair<K, V>>::iterator find(const K& k)
-        {
-            return std::find_if(data.begin(), data.end(), 
-                                    [&](auto&& x) { return x.first == k; });
-        }
     public:
         std::list<std::pair<K, V>> data;
         mutable std::shared_mutex m;
@@ -26,14 +20,16 @@ class A {
         V value_for(const K& k, const V& v) const
         {
             std::shared_lock l(m);
-            auto it = find(k);
+            auto it = std::find_if(data.begin(), data.end(), 
+                                    [&](auto&& x) { return x.first == k; });
             return it == data.end() ? v : it->second;
         }
 
         void add_or_update_mapping(const K& k, const V& v)
         {
             std::unique_lock l(m);
-            auto it = find(k);
+            auto it = std::find_if(data.begin(), data.end(), 
+                                    [&](auto&& x) { return x.first == k; });
             if (it == data.end())
                 data.emplace_back(k, v);
             else
@@ -43,7 +39,8 @@ class A {
         void remove_mapping(const K& k)
         {
             std::unique_lock l(m);
-            auto it = find(k);
+            auto it = std::find_if(data.begin(), data.end(), 
+                                    [&](auto&& x) { return x.first == k; });
             if (it != data.end())
                 data.erase(it);
         }
