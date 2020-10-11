@@ -16,5 +16,5 @@ private:
 
 public:
     A() {}
-    ~A() { }
+    ~A() { std::remove_if([])}
 };
